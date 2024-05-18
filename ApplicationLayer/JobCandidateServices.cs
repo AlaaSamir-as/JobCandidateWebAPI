@@ -20,10 +20,10 @@ namespace ApplicationLayer
         {
             if (jobCandidate_param != null)
             {
-                JobCandidate oJobCandidate = await _unitOfWork.JobCandidates.GetByEmail(jobCandidate_param.Email);
-                if (oJobCandidate != null)
-                {
-                    _unitOfWork.JobCandidates.Update(jobCandidate_param);
+                bool IsFound = await _unitOfWork.JobCandidates.IsFound(i=>i.Email==jobCandidate_param.Email);
+                if (IsFound)
+                { 
+                     _unitOfWork.JobCandidates.Update(jobCandidate_param);
                 }
                 else
                 {
