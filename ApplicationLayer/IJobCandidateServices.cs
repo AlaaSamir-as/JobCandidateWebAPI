@@ -9,6 +9,6 @@ namespace ApplicationLayer
 {
     public interface IJobCandidateServices
     {
-        Task CreateorUpdateJobCandidatesInfo(JobCandidate jobCandidate);
+        Task<int> CreateorUpdateJobCandidatesInfo(JobCandidate jobCandidate);
     }
 }

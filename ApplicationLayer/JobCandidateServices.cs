@@ -1,5 +1,6 @@
 ﻿using DomainLayer.IRepositories;
 using DomainLayer.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,30 @@ namespace ApplicationLayer
             _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateorUpdateJobCandidatesInfo(JobCandidate jobCandidate_param)
+        public async Task<int> CreateorUpdateJobCandidatesInfo(JobCandidate jobCandidate_param)
         {
-            if (jobCandidate_param != null)
+            if (jobCandidate_param == null)
             {
-                bool IsFound = await _unitOfWork.JobCandidates.IsFound(i=>i.Email==jobCandidate_param.Email);
-                if (IsFound)
-                { 
-                     _unitOfWork.JobCandidates.Update(jobCandidate_param);
-                }
-                else
-                {
-                    await _unitOfWork.JobCandidates.Add(jobCandidate_param);
-                }
-                await _unitOfWork.SaveChanges();
+                throw new ArgumentNullException(nameof(jobCandidate_param));
             }
+
+            bool IsFound = await _unitOfWork.JobCandidates.IsFound(i=>i.Email==jobCandidate_param.Email);
+            if (IsFound)
+            { 
+                    _unitOfWork.JobCandidates.Update(jobCandidate_param);
+            }
+            else
+            {
+                await _unitOfWork.JobCandidates.Add(jobCandidate_param);
+            }
+            try
+            {
+                return await _unitOfWork.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new DbUpdateException();
+            }          
         }
     }
 }

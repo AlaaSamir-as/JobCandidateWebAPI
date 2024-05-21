@@ -18,14 +18,11 @@ namespace JobCandidateWebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateORUpdateJobCandidateInfo(JobCandidate jobCandidate_param)
         {
-            if(jobCandidate_param != null)
-            {
-                await _jobCandidateServices.CreateorUpdateJobCandidatesInfo(jobCandidate_param);
-            }
-            else
+            if(jobCandidate_param == null)
             {
                 return BadRequest();
             }
+            await _jobCandidateServices.CreateorUpdateJobCandidatesInfo(jobCandidate_param);
             return Ok();
         }
     }
