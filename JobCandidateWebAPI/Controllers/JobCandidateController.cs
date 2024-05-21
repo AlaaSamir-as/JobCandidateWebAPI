@@ -15,6 +15,11 @@ namespace JobCandidateWebAPI.Controllers
             _jobCandidateServices = jobCandidateServices;
         }
 
+        /// <summary>
+        /// Create Job Candidate information or Update it if he is exist
+        /// </summary>
+        /// <param name="jobCandidate_param"></param>
+        /// <returns>OK Result or Bad Request if param is null</returns>
         [HttpPost]
         public async Task<IActionResult> CreateORUpdateJobCandidateInfo(JobCandidate jobCandidate_param)
         {
